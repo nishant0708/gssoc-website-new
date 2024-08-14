@@ -76,21 +76,24 @@ const Certi_Comp = (props) => {
   const DownloadImage = (e) => {
     e.preventDefault();
     if (typeof window !== "undefined" && props.verified === true) {
-      exportComponentAsPNG(
-        certificateWrapper,
-        {
-          fileName:
-            props.Name + "_Cert_" + props.Role + `_GSSoC${props.year}.png`,
+      // Temporarily fix the size of the component to a specific width and height
+      certificateWrapper.current.style.width = '1080px';
+      certificateWrapper.current.style.height = 'auto';
+  
+      exportComponentAsPNG(certificateWrapper, {
+        fileName: `${props.Name}_Cert_${props.Role}_GSSoC${props.year}.png`,
+        html2CanvasOptions: {
+          backgroundColor: null,
+          width: 1080,
+          height:1080, // Set specific width for the export
         },
-        {
-          html2CanvasOptions: { backgroundColor: null },
-        }
-      ).then(() => {
-        // Remove the export-specific class after exporting
+      }).then(() => {
+        // Reset the width and height after exporting
+        certificateWrapper.current.style.width = '';
+        certificateWrapper.current.style.height = '';
       });
     }
   };
-
   // const provider = new ethers.providers.JsonRpcProvider("JSON_RPC_PROVIDER");
   const provider = new ethers.providers.JsonRpcProvider(
     process.env.JSON_RPC_PROVIDER
@@ -281,6 +284,7 @@ const Certi_Comp = (props) => {
 
   return (
     <>
+
       <div className="flex justify-center" id="cert">
         {/* <Image src="/cert.png" height="700" width="1000" alt="Certificate"/> */}
         {props.Role === "Contributor" ? (
@@ -364,7 +368,7 @@ const Certi_Comp = (props) => {
             ref={certificateWrapper}
           >
             <div id="contrib_name" className="contrib_name text-big-orange">
-              {props.verified ? props.Name : "X".repeat(props.Name.length)}
+              {props.verified ? props.Name : "yy".repeat(props.Name.length)}
             </div>
           </div>
         ) : (

@@ -643,7 +643,7 @@ html {
   .contrib_name,
   .banner,
   .text-big-orange {
-    display: none;
+    display: block;
   }
   #no-mobile-alert {
     display: block;
